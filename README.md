@@ -575,5 +575,55 @@ Removing login credentials for https://index.docker.io/v1/
 <img src="imgname.png">
 
 
+## Java sample code example 
+
+```
+ ls
+Dockerfile hello.java
+❯ docker  build  -t  java:v1  .
+Sending build context to Docker daemon  3.072kB
+Step 1/7 : FROM java
+ ---> d23bdf5b1b1b
+Step 2/7 : MAINTAINER ashutoshh@linux.com
+ ---> Running in bcf9944dd804
+Removing intermediate container bcf9944dd804
+ ---> 63b8091140c7
+Step 3/7 : RUN mkdir /mycode
+ ---> Running in cff24af595ec
+Removing intermediate container cff24af595ec
+ ---> 34de7d0c1441
+Step 4/7 : ADD hello.java  /mycode/hello.java
+ ---> 03a317941654
+Step 5/7 : WORKDIR  /mycode
+ ---> Running in 5bef5238a6e4
+Removing intermediate container 5bef5238a6e4
+ ---> 50735541b45b
+Step 6/7 : RUN javac hello.java
+ ---> Running in 6a37d21195f5
+Removing intermediate container 6a37d21195f5
+ ---> 8c68fda234e5
+Step 7/7 : CMD  ["java","myclass"]
+ ---> Running in ccfff040cfbe
+Removing intermediate container ccfff040cfbe
+ ---> b5c0342412ee
+Successfully built b5c0342412ee
+Successfully tagged java:v1
+
+```
+
+## Docker day1 finished 
+
+<img src="fin.png">
+
+## FInal tip of the Day 
+
+```
+ 9047  docker  context   ls
+ 9048  docker  context   create  remoteDE --docker  "host=tcp://50.19.104.131:2375"
+ 9049  docker  context   ls
+ 9050  docker  context   use remoteDE 
+ 9051  docker  context   ls
+
+```
 
 
