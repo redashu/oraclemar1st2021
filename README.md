@@ -4,3 +4,13 @@
 
 <img src="extra.png">
 
+## application deployment model 
+
+<img src="appdep.png">
+
+## Containers in reality 
+
+<img src="containers.png">
+
+
+
