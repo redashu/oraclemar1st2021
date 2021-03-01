@@ -192,6 +192,113 @@ d6a442f47167   busybox   "ping 127.0.0.1"   13 minutes ago   Up 9 minutes       
 
 ```
 
+## checking logs / output of process running inside container 
+
+```
+8915  docker  logs  ashuc1
+ 8916  docker  logs  ashuc1  -f
+ 
+```
+
+## Containerization process
+
+<img src="build.png">
+
+## Builder tools to build docker images
+
+<img src="imgb.png">
+
+## Vscode link 
+
+[vscode](https://code.visualstudio.com/download)
+
+
+### Dockerfile example 1 
+
+```
+❯ docker  build  -t  ashuscript:v1  /Users/fire/Desktop/myimages/shellscript
+Sending build context to Docker daemon  3.584kB
+Step 1/5 : FROM oraclelinux:8.3
+ ---> d8ccb1b24024
+Step 2/5 : MAINTAINER  ashutoshh@linux.com
+ ---> Running in eb2b0cea962e
+Removing intermediate container eb2b0cea962e
+ ---> 348f613a9df9
+Step 3/5 : RUN mkdir /mydata
+ ---> Running in 32e6f0ef5e3f
+Removing intermediate container 32e6f0ef5e3f
+ ---> beac19996ce6
+Step 4/5 : COPY oracle.sh  /mydata/oracle.sh
+ ---> 048d52849e0a
+Step 5/5 : CMD  ["bash","/mydata/oracle.sh"]
+ ---> Running in dec081d8ae18
+Removing intermediate container dec081d8ae18
+ ---> 40f34bec24ad
+Successfully built 40f34bec24ad
+Successfully tagged ashuscript:v1
+❯ docker images
+REPOSITORY    TAG       IMAGE ID       CREATED         SIZE
+ashuscript    v1        40f34bec24ad   8 seconds ago   223MB
+busybox       latest    491198851f0c   10 days ago     1.23MB
+alpine        latest    28f6e2705743   11 days ago     5.61MB
+
+```
+
+## from currnet location 
+
+```
+❯ docker  build  -t  ashuscript:v2  .
+Sending build context to Docker daemon  3.584kB
+Step 1/5 : FROM oraclelinux:8.3
+ ---> d8ccb1b24024
+Step 2/5 : MAINTAINER  ashutoshh@linux.com
+ ---> Using cache
+ ---> 348f613a9df9
+Step 3/5 : RUN mkdir /mydata
+ ---> Using cache
+ ---> beac19996ce6
+Step 4/5 : COPY oracle.sh  /mydata/oracle.sh
+ ---> Using cache
+ ---> 048d52849e0a
+Step 5/5 : CMD  ["bash","/mydata/oracle.sh"]
+ ---> Using cache
+ ---> 40f34bec24ad
+Successfully built 40f34bec24ad
+Successfully tagged ashuscript:v2
+
+
+```
+
+## launching container from custom image
+
+```
+❯ docker  run --name ashuc3  -d -it  ashuscript:v1
+69edb55b6c982e699bd239b246d99de8a3547801149e443672ca1fd45099d7a1
+❯ docker  ps
+CONTAINER ID   IMAGE           COMMAND                  CREATED          STATUS          PORTS     NAMES
+69edb55b6c98   ashuscript:v1   "bash /mydata/oracle…"   3 seconds ago    Up 2 seconds              ashuc3
+1494915ef9c0   alpine          "ping 8.8.8.8"           43 minutes ago   Up 38 minutes             ashuc2
+d6a442f47167   busybox         "ping 127.0.0.1"         52 minutes ago   Up 48 minutes             ashuc1
+❯ docker logs  -f  ashuc3
+HEllo world
+time is  Mon Mar  1 07:22:10 UTC 2021
+THis is container process ...
+HEllo world
+time is  Mon Mar  1 07:22:17 UTC 2021
+THis is container process ...
+HEllo world
+time is  Mon Mar  1 07:22:24 UTC 2021
+THis is container process ...
+HEllo world
+time is  Mon Mar  1 07:22:31 UTC 2021
+THis is container process ...
+HEllo world
+time is  Mon Mar  1 07:22:38 UTC 2021
+THis is container process ...
+HEllo world
+
+```
+
 
 
 
