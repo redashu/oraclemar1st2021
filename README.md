@@ -300,6 +300,157 @@ HEllo world
 ```
 
 
+## Kill and remove  all the containers 
+
+```
+❯ docker  ps -q
+69edb55b6c98
+1494915ef9c0
+d6a442f47167
+❯ docker kill $(docker  ps -q)
+69edb55b6c98
+1494915ef9c0
+d6a442f47167
+❯ docker rm  $(docker  ps -aq)
+69edb55b6c98
+1494915ef9c0
+d6a442f47167
+
+```
+
+
+## using entrypoint and cmd all together 
+
+```
+ 8956  docker build -t  ashuscript:v4  . 
+ 8957  docker run  -d  --name x2  -it  ashuscript:v4  
+ 8958  docker run  -d  --name x3  -it  ashuscript:v4  
+ 8959  docker  ps
+ 8960  docker run  -d  --name x5  -it  ashuscript:v4  /mydata/hello.sh 
+ 8961  docker  ps
+❯ docker ps
+CONTAINER ID   IMAGE           COMMAND                  CREATED              STATUS              PORTS     NAMES
+21e00ba0357a   ashuscript:v4   "/bin/bash /mydata/h…"   About a minute ago   Up About a minute             x5
+71f4f1d731e1   ashuscript:v4   "/bin/bash /mydata/o…"   About a minute ago   Up About a minute             x3
+cb31aed77092   ashuscript:v3   "bash /mydata/oracle…"   9 minutes ago        Up 9 minutes                  x2
+dc42ec9890d5   ashuscript:v1   "ping 127.0.0.1"         11 minutes ago       Up 11 minutes                 x1
+
+```
+
+
+## access shell of a running container 
+
+```
+❯ docker exec -it  x5  bash
+[root@21e00ba0357a /]# 
+[root@21e00ba0357a /]# 
+[root@21e00ba0357a /]# cd /mydata/
+[root@21e00ba0357a mydata]# ls
+hello.sh  oracle.sh
+[root@21e00ba0357a mydata]# cat  /etc/os-release 
+NAME="Oracle Linux Server"
+VERSION="8.3"
+ID="ol"
+ID_LIKE="fedora"
+VARIANT="Server"
+VARIANT_ID="server"
+VERSION_ID="8.3"
+PLATFORM_ID="platform:el8"
+PRETTY_NAME="Oracle Linux Server 8.3"
+ANSI_COLOR="0;31"
+CPE_NAME="cpe:/o:oracle:linux:8:3:server"
+HOME_URL="https://linux.oracle.com/"
+BUG_REPORT_URL="https://bugzilla.oracle.com/"
+
+ORACLE_BUGZILLA_PRODUCT="Oracle Linux 8"
+ORACLE_BUGZILLA_PRODUCT_VERSION=8.3
+ORACLE_SUPPORT_PRODUCT="Oracle Linux"
+ORACLE_SUPPORT_PRODUCT_VERSION=8.3
+[root@21e00ba0357a mydata]# ping 127.0.0.1 
+
+
+```
+
+## Cgroups for container memory usage limit 
+
+```
+❯ docker  run -itd  --name ashux6  --memory 10m ashuscript:v4
+f6ee3d3df901f7a4a8c5104a1d7b7bbcaf916bb7a64f11c6c0d0330ed5c66dec
+```
+
+
+## ram with cpu 
+
+```
+❯ docker  run -itd  --name ashux7  --memory 10m --cpu-shares=30 ashuscript:v4
+c2599b963822a9415ec82f8b1da4fbc26100fa5c40c0565b2778a850acff2706
+
+```
+
+## more cgroups examples
+
+```
+8974  docker  run -itd  --name x6  --memory 10m ashuscript:v4  
+ 8975  docker  run -itd  --name ashux6  --memory 10m ashuscript:v4  
+ 8976* docker  stats  
+ 8977  docker  run -itd  --name ashux7  --memory 10m --cpu-shares=30 ashuscript:v4  
+ 8978  history
+ 8979  docker  ps
+ 8980  docker update  x1  --memory 200m 
+ 8981  docker update --help
+ 8982  docker update  x1  --memory-swap 200m 
+
+
+```
+
+## python
+
+```
+❯ docker  build  -t  ashupy:v1 -f  python.dockerfile    .
+Sending build context to Docker daemon  3.072kB
+Step 1/5 : FROM python
+latest: Pulling from library/python
+0ecb575e629c: Pull complete 
+7467d1831b69: Pull complete 
+feab2c490a3c: Pull complete 
+f15a0f46f8c3: Pull complete 
+937782447ff6: Pull complete 
+e78b7aaaab2c: Pull complete 
+b68a1c52a41c: Pull complete 
+ddcd772f47ec: Pull complete 
+aef84dafa567: Pull complete 
+Digest: sha256:e2cd43d291bbd21bed01bcceb5c0a8d8c50a9cef319a7b5c5ff6f85232e82021
+Status: Downloaded newer image for python:latest
+ ---> 254d4a8a8f31
+Step 2/5 : MAINTAINER ashutoshh@linux.com
+ ---> Running in 0db495d87063
+Removing intermediate container 0db495d87063
+ ---> b75d80e18e31
+Step 3/5 : RUN mkdir /code
+ ---> Running in 387a6f91c664
+Removing intermediate container 387a6f91c664
+ ---> 7cf4a846945e
+Step 4/5 : COPY abc.py /code/abc.py
+ ---> 7f3a9e41aa3a
+Step 5/5 : ENTRYPOINT ["python","/code/abc.py"]
+ ---> Running in d64bbfd68314
+Removing intermediate container d64bbfd68314
+ ---> a9e4907a9b81
+Successfully built a9e4907a9b81
+Successfully tagged ashupy:v1
+
+```
+
+## creating container from this image
+
+```
+docker  run -itd --name ashupc1  ashupy:v1 
+ 8999  docker  ps
+ 9000  docker logs -f  ashupc1  
+
+```
+
+
 
 
 
