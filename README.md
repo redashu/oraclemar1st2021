@@ -463,6 +463,117 @@ Now copy aa.txt into second container
 
 ```
 
+## Image sharing 
+
+<img src="imgshare.png">
+
+## saving image into tar file 
+
+```
+❯ docker  save  -o  myimg.tar   ashupy:v4
+❯ ls
+abc.py            myimg.tar         python.dockerfile
+
+```
+
+## removing image
+
+```
+ docker rmi  ashupy:v4
+Untagged: ashupy:v4
+Deleted: sha256:b692df35b0e37dbb12343e8be4655e692c9ea14ad37852733bf6f04bb04bea65
+Deleted: sha256:d6f8acc6f59e229d7754b1dfda321f778c3844c47492dafbe92ea5fd6f490244
+Deleted: sha256:133dd0effa21ca188709f16f32ae5e53dd68ade3a18029babeeb844188833b39
+Deleted: sha256:3455e5d51f0901da87edbdb2b5781faaf1360123453b9be9bd9c658638b873d5
+Deleted: sha256:a64117a8b724a6e4e5d47cc75a0eaf11c2d14c602b6fd486644d526753628a1e
+Deleted: sha256:c362e83d5e38a66ee84ecb7ba1f2c667a421c988cbc04b0188a3e141934b418f
+Deleted: sha256:a98e91c7be5758ddcd90f2c990dffe5553cbbee62e2493e39b9f2029a416c01e
+Deleted: sha256:fd47fa3a1644d8130d1ea1a30827071333cc8a087503fd5e40716880a846bcdf
+
+```
+
+## when you got .tar file of any image then you can restore it 
+
+
+```
+❯ ls
+abc.py            myimg.tar         python.dockerfile
+❯ docker load -i  myimg.tar
+a74b7c1eb75c: Loading layer [==================================================>]  47.66MB/47.66MB
+aa5fc7495324: Loading layer [==================================================>]  2.048kB/2.048kB
+528a04bef267: Loading layer [==================================================>]   2.56kB/2.56kB
+Loaded image: ashupy:v4
+❯ docker  images
+REPOSITORY    TAG       IMAGE ID       CREATED             SIZE
+ashupy        v4        b692df35b0e3   29 minutes ago      51.2MB
+
+```
+
+## accessing imagedb Metadata if you have linux machine access where docker engine is running 
+
+```
+[root@ip-172-31-79-103 ~]# docker  images
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+alpine              latest              28f6e2705743        11 days ago         5.61MB
+[root@ip-172-31-79-103 ~]# 
+[root@ip-172-31-79-103 ~]# 
+[root@ip-172-31-79-103 ~]# cd  /var/lib/docker/
+[root@ip-172-31-79-103 docker]# ls
+builder  buildkit  containers  image  network  overlay2  plugins  runtimes  swarm  tmp  trust  volumes
+[root@ip-172-31-79-103 docker]# cd  image/
+[root@ip-172-31-79-103 image]# ls
+overlay2
+[root@ip-172-31-79-103 image]# cd  overlay2/
+[root@ip-172-31-79-103 overlay2]# ls
+distribution  imagedb  layerdb  repositories.json
+[root@ip-172-31-79-103 overlay2]# cd  imagedb/
+[root@ip-172-31-79-103 imagedb]# ls
+content  metadata
+[root@ip-172-31-79-103 imagedb]# cd content/
+[root@ip-172-31-79-103 content]# ls
+sha256
+[root@ip-172-31-79-103 content]# cd  sha256/
+[root@ip-172-31-79-103 sha256]# ls
+28f6e27057430ed2a40dbdd50d2736a3f0a295924016e294938110eeb8439818
+[root@ip-172-31-79-103 sha256]# docker  images
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+alpine              latest              28f6e2705743        11 days ago         5.61MB
+
+```
+
+## container registry options 
+
+<img src="reg.png">
+
+## PUshing image to docker hub 
+
+```
+❯ docker  login  -u  dockerashu
+Password: 
+Login Succeeded
+❯ docker  tag   ashupy:v4    dockerashu/ashupy:v4
+❯ docker  push  dockerashu/ashupy:v4
+The push refers to repository [docker.io/dockerashu/ashupy]
+528a04bef267: Pushed 
+aa5fc7495324: Pushed 
+a74b7c1eb75c: Pushed 
+cb381a32b229: Mounted from library/alpine 
+v4: digest: sha256:ae7b1f1ed9f942ccee57af2e3989f77e29f1a202f987f63a0e4ee87723e27a89 size: 1154
+
+```
+
+## you can logout your docker hub cred 
+
+```
+❯ docker  logout
+Removing login credentials for https://index.docker.io/v1/
+
+```
+
+## image name reality 
+
+<img src="imgname.png">
+
 
 
 
