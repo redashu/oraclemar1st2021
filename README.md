@@ -1,1 +1,6 @@
-# oraclemar1st2021
+# Oracle Docker & Kubernetes  training 
+
+## Some extra topics to cover 
+
+<img src="extra.png">
+
