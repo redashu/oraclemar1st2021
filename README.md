@@ -92,4 +92,64 @@ a5f5076826cf   dockerashu/ashupy:v4   "ping 127.0.0.1"         6 seconds ago    
 
 ```
 
+## Web server overview 
+
+<img src="webserver.png">
+
+
+## apache httpd 
+
+<img src="httpd.png">
+
+## systemd in containerd
+
+[systemd](https://developers.redhat.com/blog/2016/09/13/running-systemd-in-a-non-privileged-container/)
+
+##  supervisor for multiple service in container 
+
+[contaienr service](https://docs.docker.com/config/containers/multi-service_container/)
+
+
+## systemd not supported by docker by default 
+
+<img src="systemd.png">
+
+
+## Building htmlwebapp with apache httpd 
+
+```
+
+9135  docker  build  -t   htmlwebapp:v1  . 
+❯ docker  images
+REPOSITORY               TAG       IMAGE ID       CREATED          SIZE
+htmlwebapp               v1        a921071af74b   30 seconds ago   347MB
+
+```
+
+## creating container from image
+
+```
+❯ docker  run  -itd --name ashuwebc1  -p  2211:80  htmlwebapp:v1
+b7c7c163b88c858285af0ffa4338217e7c67470ec7fb9a72d4827bb8857cf0ad
+❯ docker  ps
+CONTAINER ID   IMAGE                  COMMAND                  CREATED          STATUS          PORTS                  NAMES
+b7c7c163b88c   htmlwebapp:v1          "/bin/sh -c '/usr/sb…"   4 seconds ago    Up 3 seconds    0.0.0.0:2211->80/tcp   ashuwebc1
+
+```
+
+## checking running container content 
+
+```
+❯ docker  exec -it  ashuwebc1  bash
+[root@b7c7c163b88c /]# cd  /var/www/html/
+[root@b7c7c163b88c html]# ls  -a
+.  ..  images  index.html  styles
+
+```
+
+## Image pushing to container registry 
+
+<img src="push.png">
+
+
 
