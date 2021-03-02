@@ -799,5 +799,11 @@ local     e7b51461682381cc6a7c15e2c4efa0571ca10334465d12d4b41a71d5668a26f2
 ```
 
 
+## Note: If you are using docker desktop then to access linux host use below command inshort it is using concept of Namespace 
+
+```
+docker run -it --privileged --pid=host debian nsenter -t 1 -m -u -n -i sh
+```
+
 
 
