@@ -753,6 +753,51 @@ UUID=bc07e2f4-d5ff-494b-adf1-6f6da7608cd6     /           xfs    defaults,noatim
 [docker storage](https://github.com/redashu/docker/tree/master/docker_storage)
 
 
+## Docker volume 
+
+```
+❯ docker  volume   ls
+DRIVER    VOLUME NAME
+local     e7b51461682381cc6a7c15e2c4efa0571ca10334465d12d4b41a71d5668a26f2
+❯ docker  volume  create  ashuvol1
+ashuvol1
+❯ docker  volume   ls
+DRIVER    VOLUME NAME
+local     ashuvol1
+local     e7b51461682381cc6a7c15e2c4efa0571ca10334465d12d4b41a71d5668a26f2
+❯ docker  volume   inspect  ashuvol1
+[
+    {
+        "CreatedAt": "2021-03-02T11:29:57Z",
+        "Driver": "local",
+        "Labels": {},
+        "Mountpoint": "/var/lib/docker/volumes/ashuvol1/_data",
+        "Name": "ashuvol1",
+        "Options": {},
+        "Scope": "local"
+    }
+]
+❯ docker  run -itd  --name  x99  -v   ashuvol1:/mnt/hello  alpine ping 127.0.0.1
+b28d1727c7cc69b8eca7210b737e4fefc5ef3ea23a2d2b277b3b1ce25a787186
+❯ docker  exec -it  x99 sh
+/ # cd  /mnt/hello/
+/mnt/hello # ls
+/mnt/hello # mkdir hello
+/mnt/hello # echo hii  >a.txt
+/mnt/hello # ls
+a.txt  hello
+/mnt/hello # 
+❯ docker rm  x99 -f
+x99
+❯ docker  volume  ls
+DRIVER    VOLUME NAME
+local     ashuvol1
+local     e7b51461682381cc6a7c15e2c4efa0571ca10334465d12d4b41a71d5668a26f2
+
+░▒▓ ~ ·································································
+
+```
+
 
 
 
