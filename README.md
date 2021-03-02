@@ -152,4 +152,50 @@ b7c7c163b88c   htmlwebapp:v1          "/bin/sh -c '/usr/sb…"   4 seconds ago  
 <img src="push.png">
 
 
+## Pushing image to Docker hub 
+
+```
+❯ docker  tag  a921071af74b  dockerashu/htmlapp:v1
+❯ docker  login  -u dockerashu
+Password: 
+Login Succeeded
+❯ docker  push   dockerashu/htmlapp:v1
+The push refers to repository [docker.io/dockerashu/htmlapp]
+be4df2baf212: Pushed 
+e8e9e5112d4a: Pushing [=====================================>   
+
+```
+
+## using docker. to start a custom private registry 
+
+```
+docker  run -itd  -v  /myimages:/var/lib/registry  -p 5000:5000 --restart always   registry 
+cd468f5e6c7511d6dcc3412f7d3a32bfad8b2b4d3e14cffba7dc974d313b1a96
+[root@ip-172-31-79-103 ~]# docker  ps
+CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                    NAMES
+cd468f5e6c75        registry            "/entrypoint.sh /etc…"   4 seconds ago       Up 2 seconds        0.0.0.0:5000->5000/tcp
+
+```
+
+## PUshing to azure container registry 
+
+```
+❯ docker   tag  alpine:latest   ashutoshh.azurecr.io/alpine:v1
+❯ 
+❯ 
+❯ docker  login   ashutoshh.azurecr.io  -u  ashutoshh
+Password: 
+Login Succeeded
+❯ docker  push   ashutoshh.azurecr.io/alpine:v1
+The push refers to repository [ashutoshh.azurecr.io/alpine]
+cb381a32b229: Pushed 
+v1: digest: sha256:4661fb57f7890b9145907a1fe2555091d333ff3d28db86c3bb906f6a2be93c87 size: 528
+❯ 
+❯ 
+❯ docker  logout   ashutoshh.azurecr.io
+Removing login credentials for ashutoshh.azurecr.io
+
+
+```
+
 
