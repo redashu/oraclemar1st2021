@@ -197,5 +197,26 @@ Removing login credentials for ashutoshh.azurecr.io
 
 
 ```
+## Java web with apache tomcat 
+
+<img src="tomcat.png">
+
+### build and create 
+
+```
+
+ docker  build  -t  tomcat:v1  . 
+ ---
+ 
+❯ docker  run -itd --name jspc1  -p  1100:8080  tomcat:v1
+34b92da20339ab660a35d8ecd1a0cecfd557b1940eea7cce3ca8d6fec298400d
+❯ docker  ps
+CONTAINER ID   IMAGE           COMMAND                  CREATED             STATUS             PORTS                    NAMES
+34b92da20339   tomcat:v1       "catalina.sh run"        7 seconds ago       Up 6 seconds       0.0.0.0:1100->8080/tcp   jspc1
+b7c7c163b88c   htmlwebapp:v1   "/bin/sh -c '/usr/sb…"   About an hour ago   Up About an hour   0.0.0.0:2211->80/tcp     ashuwebc1
+
+```
+
+
 
 
