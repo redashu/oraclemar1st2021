@@ -697,4 +697,62 @@ INSECURE_REGISTRY='--insecure-registry 50.19.104.131:5000'
 
 ```
 
+## only migrate OLD data to new location of docker engine 
+
+```
+   88  rsync  -avp   /var/lib/docker/   /orDE/
+   89  history 
+[root@ip-172-31-79-103 ~]# docker  images
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+[root@ip-172-31-79-103 ~]# systemctl restart docker  
+[root@ip-172-31-79-103 ~]# docker  images
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+aa                  v1                  5170a375a059        24 hours ago        51.2MB
+dockerashu/ashupy   v4                  b692df35b0e3        26 hours ago        51.2MB
+registry            latest              5c4008a25e05        5 days ago          26.2MB
+alpine              latest              28f6e2705743        12 days ago         5.61MB
+[root@ip-172-31-79-103 ~]# docker  ps
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+[root@ip-172-31-79-103 ~]# docker  ps -a
+CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS                     PORTS               NAMES
+cd41ba0efd34        alpine              "sh -c 'apk update; …"   52 minutes ago      Exited (0) 6 minutes ago 
+
+```
+
+## Restart policy in container 
+
+```
+[root@ip-172-31-79-103 ~]# docker  update  cd41ba0efd34  --restart  always 
+cd41ba0efd34
+[root@ip-172-31-79-103 ~]# 
+[root@ip-172-31-79-103 ~]# 
+[root@ip-172-31-79-103 ~]# systemctl stop docker 
+[root@ip-172-31-79-103 ~]# systemctl start  docker 
+[root@ip-172-31-79-103 ~]# docker  ps
+CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS               NAMES
+cd41ba0efd34        alpine              "sh -c 'apk update; …"   55 minutes ago      Up 2 seconds                            silly_lamport
+[root@ip-172-31-79-103 ~]# docker  run -d  --restart  always  
+
+
+
+```
+
+## Note: please add your external storage in /etc/fstab  so that even if you reboot your host nothing will go wrong 
+
+```
+
+[root@ip-172-31-79-103 ~]# cat  /etc/fstab 
+#
+UUID=bc07e2f4-d5ff-494b-adf1-6f6da7608cd6     /           xfs    defaults,noatime  1   1
+/dev/nvme1n1  /orDE/    xfs   defaults  0  0 
+
+```
+
+### LInk for configure Docker storage in Debain & RPM based host 
+
+[docker storage](https://github.com/redashu/docker/tree/master/docker_storage)
+
+
+
+
 
