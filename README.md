@@ -646,4 +646,55 @@ d9f3a7438e0f   portainer/portainer   "/portainer"   7 seconds ago   Up 4 seconds
 <img src="driver.png">
 
 
+## Container networking 
+
+<img src="model.png">
+
+
+
+# Storage in Docker 
+
+<img src="st.png">
+
+## COnfigure Docker engine to use a diff storage 
+
+### disk add now format and mount disk 
+
+```
+ 64  lsblk 
+   65  mkfs.xfs  -i size=512   /dev/nvme1n1 
+   66  mkdir   /orDE 
+   67  mount  /dev/nvme1n1  /orDE/
+   
+```
+
+### COnfigure docker Engine 
+
+
+```
+[root@ip-172-31-79-103 sysconfig]# pwd
+/etc/sysconfig
+[root@ip-172-31-79-103 sysconfig]# cat  docker
+# The max number of open files for the daemon itself, and all
+# running containers.  The default value of 1048576 mirrors the value
+# used by the systemd service unit.
+DAEMON_MAXFILES=1048576
+
+# Additional startup options for the Docker daemon, for example:
+# OPTIONS="--ip-forward=true --iptables=true"
+# By default we limit the number of open files per container
+OPTIONS="--default-ulimit nofile=1024:4096 -H  tcp://0.0.0.0:2375 -g  /orDE"
+
+# How many seconds the sysvinit script waits for the pidfile to appear
+# when starting the daemon.
+DAEMON_PIDFILE_TIMEOUT=10
+
+ADD_REGISTRY='--add-registry 50.19.104.131:5000'
+INSECURE_REGISTRY='--insecure-registry 50.19.104.131:5000'
+
+[root@ip-172-31-79-103 sysconfig]# systemctl daemon-reload 
+[root@ip-172-31-79-103 sysconfig]# systemctl restart  docker  
+
+```
+
 
