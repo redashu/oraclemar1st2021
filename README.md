@@ -617,5 +617,33 @@ eth0      Link encap:Ethernet  HWaddr 02:42:C0:A8:64:C8
 
 ```
 
+## Container management using webui 
+
+<img src="webui.png">
+
+## Using portainer for webui 
+
+```
+❯ docker  run -itd --name webui -p 1234:9000   -v  /var/run/docker.sock:/var/run/docker.sock portainer/portainer
+Unable to find image 'portainer/portainer:latest' locally
+latest: Pulling from portainer/portainer
+d1e017099d17: Pull complete 
+717377b83d5c: Pull complete 
+Digest: sha256:f8c2b0a9ca640edf508a8a0830cf1963a1e0d2fd9936a64104b3f658e120b868
+Status: Downloaded newer image for portainer/portainer:latest
+d9f3a7438e0f03a8ccd10218bd3e230fa272ee7142ea8a02768005dd347fa30d
+❯ 
+❯ 
+❯ docker  ps
+CONTAINER ID   IMAGE                 COMMAND        CREATED         STATUS         PORTS                    NAMES
+d9f3a7438e0f   portainer/portainer   "/portainer"   7 seconds ago   Up 4 seconds   0.0.0.0:1234->9000/tcp   webui
+
+```
+
+## macvlan and other networking drivers 
+
+
+<img src="driver.png">
+
 
 
