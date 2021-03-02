@@ -218,5 +218,404 @@ b7c7c163b88c   htmlwebapp:v1   "/bin/sh -c '/usr/sb…"   About an hour ago   Up
 ```
 
 
+# Docker Networking ..
+
+<img src="dnetl1.png">
+
+
+## checking default bridge 
+
+```
+❯ docker   network   ls
+NETWORK ID     NAME      DRIVER    SCOPE
+e36f4430876f   bridge    bridge    local
+0cecd29f7ec2   host      host      local
+c891d3c2e465   none      null      local
+❯ docker   network   inspect  bridge
+[
+    {
+        "Name": "bridge",
+        "Id": "e36f4430876fcd05150fbcfbef579a1a0f5e92602b1b84e09a0ed1535bc9108e",
+        "Created": "2021-02-28T06:39:13.704701975Z",
+        "Scope": "local",
+        "Driver": "bridge",
+        "EnableIPv6": false,
+        "IPAM": {
+            "Driver": "default",
+            "Options": null,
+            "Config": [
+                {
+                    "Subnet": "172.17.0.0/16",
+                    "Gateway": "172.17.0.1"
+                }
+            ]
+        },
+        "Internal": false,
+        "Attachable": false,
+        "Ingress": false,
+        "ConfigFrom": {
+            "Network": ""
+        },
+        "ConfigOnly": false,
+        "Containers": {},
+        "Options": {
+            "com.docker.network.bridge.default_bridge": "true",
+            "com.docker.network.bridge.enable_icc": "true",
+            "com.docker.network.bridge.enable_ip_masquerade": "true",
+            "com.docker.network.bridge.host_binding_ipv4": "0.0.0.0",
+            "com.docker.network.bridge.name": "docker0",
+            "com.docker.network.driver.mtu": "1500"
+        },
+        "Labels": {}
+    }
+]
+
+
+```
+
+## creating container to check ip 
+
+```
+❯ docker  run -itd --name x1 alpine ping 127.0.0.1
+659b1722fc6c8c031932e6b04902ca27b14d718b35706a0ade948b1e48bcb817
+❯ docker  ps
+CONTAINER ID   IMAGE     COMMAND            CREATED         STATUS        PORTS     NAMES
+659b1722fc6c   alpine    "ping 127.0.0.1"   3 seconds ago   Up 1 second             x1
+
+
+```
+
+## checking container ip 
+
+### Method 1 
+
+```
+❯ docker  exec -it  x1  sh
+/ # ifconfig 
+eth0      Link encap:Ethernet  HWaddr 02:42:AC:11:00:02  
+          inet addr:172.17.0.2  Bcast:172.17.255.255  Mask:255.255.0.0
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:11 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0 
+          RX bytes:906 (906.0 B)  TX bytes:0 (0.0 B)
+
+lo        Link encap:Local Loopback  
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          UP LOOPBACK RUNNING  MTU:65536  Metric:1
+          RX packets:112 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:112 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:9408 (9.1 KiB)  TX bytes:9408 (9.1 KiB)
+
+/ # exit
+
+```
+
+### Method 2. if container is not having ifconfig command 
+
+```
+❯ docker  inspect   x1
+[
+    {
+        "Id": "659b1722fc6c8c031932e6b04902ca27b14d718b35706a0ade948b1e48bcb817",
+        "Created": "2021-03-02T07:17:57.297231Z",
+        "Path": "ping",
+        "Args": [
+            "127.0.0.1"
+        ],
+        "State": {
+            "Status": "running",
+            "Running": true,
+            "Paused": false,
+            "Restarting": false,
+            "OOMKilled": false,
+            "Dead": false,
+            "Pid": 15396,
+
+--- check for last line 
+
+```
+
+### method3 filter 
+
+```
+❯ docker  inspect   x1  -f '{{.NetworkSettings.IPAddress}}'
+172.17.0.2
+
+
+```
+
+### Method 4. check by inspecting bridge as well
+
+```
+
+❯ docker  network  inspect  bridge
+[
+    {
+        "Name": "bridge",
+        "Id": "e36f4430876fcd05150fbcfbef579a1a0f5e92602b1b84e09a0ed1535bc9108e",
+        "Created": "2021-02-28T06:39:13.704701975Z",
+        "Scope": "local",
+        "Driver": "bridge",
+        "EnableIPv6": false,
+        "IPAM": {
+            "Driver": "default",
+            "Options": null,
+            "Config": [
+                {
+                    "Subnet": "172.17.0.0/16",
+                    "Gateway": "172.17.0.1"
+                }
+            ]
+        },
+        "Internal": false,
+        "Attachable": false,
+        "Ingress": false,
+        "ConfigFrom": {
+            "Network": ""
+        },
+        "ConfigOnly": false,
+        "Containers": {
+            "659b1722fc6c8c031932e6b04902ca27b14d718b35706a0ade948b1e48bcb817": {
+                "Name": "x1",
+                "EndpointID": "c5cb3d77c14ba7f20ae186f93233eb8f9e99ae1b4b60dbf417364fcacbfacfef",
+                "MacAddress": "02:42:ac:11:00:02",
+                "IPv4Address": "172.17.0.2/16",
+                "IPv6Address": ""
+            }
+        },
+        "Options": {
+            "com.docker.network.bridge.default_bridge": "true",
+            "com.docker.network.bridge.enable_icc": "true",
+            "com.docker.network.bridge.enable_ip_masquerade": "true",
+            "com.docker.network.bridge.host_binding_ipv4": "0.0.0.0",
+            "com.docker.network.bridge.name": "docker0",
+            "com.docker.network.driver.mtu": "1500"
+        },
+        "Labels": {}
+    }
+]
+
+```
+
+## Good idea if wanna check all containers ip 
+
+```
+❯ docker  run -itd --name x2 alpine ping 127.0.0.1
+c503de652c3a8c41f3f64c64b83ffe07e47d7a77985c85a120f2e4caf8034ac0
+❯ 
+
+░▒▓ ~/Desktop/myimages/javawebapp/javawebapp  master !1 ?1 ···························································· 12:54:16 PM ▓▒░─╮
+❯ docker  network  inspect  bridge                                                                                                        ─╯
+❯ docker  network  inspect  bridge
+[
+    {
+        "Name": "bridge",
+        "Id": "e36f4430876fcd05150fbcfbef579a1a0f5e92602b1b84e09a0ed1535bc9108e",
+        "Created": "2021-02-28T06:39:13.704701975Z",
+        "Scope": "local",
+        "Driver": "bridge",
+        "EnableIPv6": false,
+        "IPAM": {
+            "Driver": "default",
+            "Options": null,
+            "Config": [
+                {
+                    "Subnet": "172.17.0.0/16",
+                    "Gateway": "172.17.0.1"
+                }
+            ]
+        },
+        "Internal": false,
+        "Attachable": false,
+        "Ingress": false,
+        "ConfigFrom": {
+            "Network": ""
+        },
+        "ConfigOnly": false,
+        "Containers": {
+            "659b1722fc6c8c031932e6b04902ca27b14d718b35706a0ade948b1e48bcb817": {
+                "Name": "x1",
+                "EndpointID": "c5cb3d77c14ba7f20ae186f93233eb8f9e99ae1b4b60dbf417364fcacbfacfef",
+                "MacAddress": "02:42:ac:11:00:02",
+                "IPv4Address": "172.17.0.2/16",
+                "IPv6Address": ""
+            },
+            "c503de652c3a8c41f3f64c64b83ffe07e47d7a77985c85a120f2e4caf8034ac0": {
+                "Name": "x2",
+                "EndpointID": "93e1e8208875d850b621d86aeddbd132621f787ea26916a67a3017a9be7164f0",
+                "MacAddress": "02:42:ac:11:00:03",
+                "IPv4Address": "172.17.0.3/16",
+                "IPv6Address": ""
+            }
+
+```
+
+## Docker networking level  1 
+
+```
+9199  docker   network   ls
+ 9200  docker   network   inspect  bridge 
+ 9201  docker   network   inspect  bridge -f '{{.Name}}'
+ 9202  docker   network   inspect  bridge -f '{{.IPAM.Config}}'
+ 9203  history
+ 9204  docker  ps -a
+ 9205  docker  run -itd --name x1 alpine ping 127.0.0.1 
+ 9206  docker  ps
+ 9207  history
+ 9208  docker  exec -it  x1  sh 
+ 9209  docker  ps
+ 9210  docker  inspect   x1  
+ 9211  docker  inspect   x1  -f '{{.NetworkSettings.IPAddress}}'
+ 9212  history
+ 9213  docker  network  ls
+ 9214  docker  network  inspect  bridge 
+ 9215  history
+ 9216  docker  run -itd --name x2 alpine ping 127.0.0.1 
+ 9217  docker  network  inspect  bridge 
+
+```
+
+## Docker network with NAT 
+
+<img src="nat.png">
+
+# Docker networking with Port forwarding 
+
+<img src="portf.png">
+
+
+## None Bridge in Docker 
+
+```
+❯       docker  run -itd  --name x3  --network none  alpine ping 127.0.0.1
+881a9d553d8b40edb021f402886d719bba2eb7b4b54a02b7afed5fb0b3eb52de
+❯ docker  ps
+CONTAINER ID   IMAGE     COMMAND            CREATED         STATUS        PORTS     NAMES
+881a9d553d8b   alpine    "ping 127.0.0.1"   2 seconds ago   Up 1 second             x3
+c503de652c3a   alpine    "ping 127.0.0.1"   2 hours ago     Up 2 hours              x2
+659b1722fc6c   alpine    "ping 127.0.0.1"   2 hours ago     Up 2 hours              x1
+❯ docker  exec -it  x3  sh
+/ # ifconfig 
+lo        Link encap:Local Loopback  
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          UP LOOPBACK RUNNING  MTU:65536  Metric:1
+          RX packets:28 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:28 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:2352 (2.2 KiB)  TX bytes:2352 (2.2 KiB)
+
+/ # ping  172.17.0.1
+PING 172.17.0.1 (172.17.0.1): 56 data bytes
+ping: sendto: Network unreachable
+/ # ping  172.17.0.2
+PING 172.17.0.2 (172.17.0.2): 56 data bytes
+ping: sendto: Network unreachable
+/ # ping google.com
+^C
+/ # exit
+
+
+```
+
+
+## Docker Host bridge 
+
+<img src="host.png">
+
+```
+228  docker run -itd --name x1 --network  host  alpine ping 127.0.0.1 
+ 9229  docker run -itd --name x2 --network  host  alpine ping 127.0.0.1 
+ 
+```
+
+## Custom network bridge in Docker 
+
+<img src="br.png">
+
+```
+9235  docker network  ls
+ 9236  docker  network  create   ashubr1  --subnet 192.168.100.0/24  
+ 9237  docker network  ls
+ 9238  docker  network  create   ashubr2 
+ 9239  docker network  ls
+
+```
+
+## Container in custom subnet bridge 
+
+```
+❯ docker  run -itd --name x6 --network ashubr1 alpine ping 127.0.0.1
+c44184fa6d9dab0a1c793eba80ec59c74fe258efd79930f31ef2d4ae95f6c1c5
+❯ 
+❯ docker  run -itd --name x7 --network ashubr1 --ip 192.168.100.200 alpine ping 127.0.0.1
+30a11e13a6a078d99fa03cc05257b36269fccdf1334b46b529ba355868750a45
+❯ docker  ps
+
+```
+
+## checking 
+
+```
+❯ docker  exec -it  x6  ifconfig
+eth0      Link encap:Ethernet  HWaddr 02:42:C0:A8:64:02  
+          inet addr:192.168.100.2  Bcast:192.168.100.255  Mask:255.255.255.0
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:15 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0 
+          RX bytes:1242 (1.2 KiB)  TX bytes:0 (0.0 B)
+
+lo        Link encap:Local Loopback  
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          UP LOOPBACK RUNNING  MTU:65536  Metric:1
+          RX packets:158 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:158 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:13272 (12.9 KiB)  TX bytes:13272 (12.9 KiB)
+
+❯ docker  exec -it  x7  ifconfig
+eth0      Link encap:Ethernet  HWaddr 02:42:C0:A8:64:C8  
+          inet addr:192.168.100.200  Bcast:192.168.100.255  Mask:255.255.255.0
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:10 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0 
+          RX bytes:796 (796.0 B)  TX bytes:0 (0.0 B)
+
+
+```
+
+## Docker networking history 
+
+```
+9199  docker   network   ls
+ 9200  docker   network   inspect  bridge 
+ 9201  docker   network   inspect  bridge -f '{{.Name}}'
+ 9202  docker   network   inspect  bridge -f '{{.IPAM.Config}}'
+ 9211  docker  inspect   x1  -f '{{.NetworkSettings.IPAddress}}'
+ 9213  docker  network  ls
+ 9214  docker  network  inspect  bridge 
+ 9217  docker  network  inspect  bridge 
+ 9222  docker  network   ls
+ 9223  \tdocker  run -itd  --name x3  --network none  alpine ping 127.0.0.1 
+ 9228  docker run -itd --name x1 --network  host  alpine ping 127.0.0.1 
+ 9229  docker run -itd --name x2 --network  host  alpine ping 127.0.0.1 
+ 9235  docker network  ls
+ 9236  docker  network  create   ashubr1  --subnet 192.168.100.0/24  
+ 9237  docker network  ls
+ 9238  docker  network  create   ashubr2 
+ 9239  docker network  ls
+ 9240  docker network  inspect  ashubr1 
+ 9241  docker network  inspect  ashubr2
+ 9243  docker  run -itd --name x6 --network ashubr1 alpine ping 127.0.0.1 
+ 9244  docker  run -itd --name x7 --network ashubr1 --ip 192.168.100.200 alpine ping 127.0.0.1 
+ 9251  docker  run -itd --name x8 --network ashubr2 alpine ping 127.0.0.1 
+ 9254  docker  network connect  ashubr2  x7 
+ 9257  docker  network disconnect  ashubr2  x7 
+
+```
+
 
 
