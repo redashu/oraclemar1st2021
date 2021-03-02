@@ -45,3 +45,51 @@ lo        Link encap:Local Loopback
 
 ```
 
+## Inspecting docker image with format 
+
+```
+❯ docker  inspect  dockerashu/ashupy:v4
+[
+    {
+        "Id": "sha256:b692df35b0e37dbb12343e8be4655e692c9ea14ad37852733bf6f04bb04bea65",
+        "RepoTags": [
+            "dockerashu/ashupy:v4",
+            "ashupy:v4"
+        ],
+        "RepoDigests": [
+            "dockerashu/ashupy@sha256:ae7b1f1ed9f942ccee57af2e3989f77e29f1a202f987f63a0e4ee87723e27a89"
+        ],
+        "Parent": "",
+        "Comment": "",
+        "Created": "2021-03-01T09:41:40.1241772Z",
+        "Container": "084116b8507bd333fe05d363a551c1fedb901f77fec3a65933994e1ae7c23e80",
+        "ContainerConfig": {
+
+-======
+
+
+
+❯ docker  inspect  dockerashu/ashupy:v4   -f '{{.ID}}'
+sha256:b692df35b0e37dbb12343e8be4655e692c9ea14ad37852733bf6f04bb04bea65
+❯ docker  inspect  dockerashu/ashupy:v4   --format='{{.ID}}'
+sha256:b692df35b0e37dbb12343e8be4655e692c9ea14ad37852733bf6f04bb04bea65
+❯ docker  inspect  dockerashu/ashupy:v4   --format='{{.RepoTags}}'
+[dockerashu/ashupy:v4 ashupy:v4]
+❯ docker  inspect  dockerashu/ashupy:v4   --format='{{.ContainerConfig.Cmd}}'
+[/bin/sh -c #(nop)  ENTRYPOINT ["python3" "/code/abc.py"]]
+
+```
+
+## Replacing entrypoint parent process
+
+```
+ docker  run -dit --name x2  --entrypoint ping   dockerashu/ashupy:v4   127.0.0.1
+a5f5076826cf626cd84d5e61cb35bbec3ddefd26e040d4f138f27b6653fd53b2
+❯ docker  ps
+CONTAINER ID   IMAGE                  COMMAND                  CREATED          STATUS          PORTS     NAMES
+a5f5076826cf   dockerashu/ashupy:v4   "ping 127.0.0.1"         6 seconds ago    Up 4 seconds              x2
+76a256de7545   dockerashu/ashupy:v4   "python3 /code/abc.p…"   38 seconds ago   Up 36 seconds             x1
+
+```
+
+
