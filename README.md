@@ -404,5 +404,91 @@ ashupod1.yaml ashupod2.yaml p.json
  
  ```
  
+ ## Pod using Replication controller [RC]
+ 
+ <img src="rc.png">
+ 
+ ```
+ 9448  kubectl apply -f  helloapp.yaml 
+ 9449  kubectl  get  replicationcontroller
+ 9450  kubectl  get  po 
+ 9451  kubectl  get  rc
+ 9452  kubectl  get  po 
+ 9453  kubectl  get  po  ashu-rc-dtkqs -o yaml 
+ 9454  history
+ 9455  kubectl  get  all  --all
+ 9456  kubectl  get  all  
+ 9457  kubectl  get  all   --all-namespaces 
+❯ 
+❯ 
+❯ 
+❯ kubectl  get  rc
+NAME      DESIRED   CURRENT   READY   AGE
+ashu-rc   1         1         1       5m9s
+❯ kubectl   get  po
+NAME            READY   STATUS    RESTARTS   AGE
+ashu-rc-dtkqs   1/1     Running   0          5m16s
+❯ kubectl  delete  pod ashu-rc-dtkqs
+pod "ashu-rc-dtkqs" deleted
+❯ kubectl   get  po
+NAME            READY   STATUS    RESTARTS   AGE
+ashu-rc-dbsdb   1/1     Running   0          8s
+```
+
+## More like production / stag cases 
+
+```
+❯ minikube status
+minikube
+type: Control Plane
+host: Running
+kubelet: Running
+apiserver: Running
+kubeconfig: Configured
+timeToStop: Nonexistent
+
+❯ 
+❯ 
+❯ minikube  node add
+😄  Adding node m02 to cluster minikube
+❗  Cluster was created without any CNI, adding node to it might cause broken network.
+E0303 16:44:04.307587   10193 register.go:139] unexpected first step: ""
+👍  Starting node minikube-m02 in cluster minikube
+E0303 16:44:05.009734   10193 register.go:139] unexpected first step: ""
+🔥  Creating docker container (CPUs=2, Memory=2200MB) ...\ 
+
+
+
+```
+
+## adding  / delete node using minikube 
+
+```
+9448  kubectl apply -f  helloapp.yaml 
+ 9449  kubectl  get  replicationcontroller
+ 9450  kubectl  get  po 
+ 9451  kubectl  get  rc
+ 9452  kubectl  get  po 
+ 9453  kubectl  get  po  ashu-rc-dtkqs -o yaml 
+ 9454  history
+ 9455  kubectl  get  all  --all
+ 9456  kubectl  get  all  
+ 9457  kubectl  get  all   --all-namespaces 
+ 9458  history
+ 9459  kubectl  get  rc
+ 9460  kubectl   get  po
+ 9461  kubectl  delete  pod ashu-rc-dtkqs 
+ 9462  kubectl   get  po
+ 9463  history
+ 9464  kubectl  get  nodes
+ 9465  minikube status
+ 9466  minikube  node add
+ 9467  minikube status 
+ 9468  kubectl  get  nodes
+ 9469  minikube node delete 
+ 9470  minikube node delete  minikube-m02 
+ 
+ ```
+ 
  
 
