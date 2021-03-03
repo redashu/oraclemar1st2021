@@ -169,4 +169,24 @@ services:
 
 ```
 
+## Problems in Container management 
+
+<img src="problem.png">
+
+## orchestration engine 
+
+<img src="orch.png">
+
+## Reach here 
+
+[k8sdocs](https://kubernetes.io/docs/home/)
+
+## k8s architecture 
+
+<img src="apische.png">
+
+## componets on master node 
+
+<img src="compo.png">
+
 
