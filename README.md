@@ -490,5 +490,73 @@ E0303 16:44:05.009734   10193 register.go:139] unexpected first step: ""
  
  ```
  
+ ## 4 Node cluster 
  
+ ### steps to perform in all the Nodes 
+ 
+ ```
+ #  make sure DNS & DHCP is working  
+#  disable swap memory 
+swapoff -a
+#  install any CRE 
+yum  install docker -y
+systemctl start  docker 
+systemclt  enable docker
+
+# enable kernel bridge support  for CNI purpose 
+
+modprobe br_netfilter
+echo '1' > /proc/sys/net/bridge/bridge-nf-call-iptables
+
+# configure yum / dnf server to install Kubeadm from Google repo
+
+cat  <<EOF  >/etc/yum.repos.d/kube.repo
+[kube]
+baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
+gpgcheck=0
+EOF
+
+yum  install  kubeadm -y
+systemctl start  kubelet 
+systemctl enable kubelet 
+
+```
+
+## Choose node you want to configure as Master 
+
+```
+ kubeadm  init  --pod-network-cidr=192.168.0.0/16  --apiserver-advertise-address=0.0.0.0  --apiserver-cert-extra-sans=54.204.163.44,172.31.88.231 
+[init] Using Kubernetes version: v1.20.4
+[preflight] Running pre-flight checks
+
+```
+
+### after some time 
+
+```
+
+Your Kubernetes control-plane has initialized successfully!
+
+To start using your cluster, you need to run the following as a regular user:
+
+  mkdir -p $HOME/.kube
+  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+  sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+Alternatively, if you are the root user, you can run:
+
+  export KUBECONFIG=/etc/kubernetes/admin.conf
+
+You should now deploy a pod network to the cluster.
+Run "kubectl apply -f [podnetwork].yaml" with one of the options listed at:
+  https://kubernetes.io/docs/concepts/cluster-administration/addons/
+
+Then you can join any number of worker nodes by running the following on each as root:
+
+kubeadm join 172.31.88.231:6443 --token 3nrupj.6g8yno05xy7xzji7 \
+    --discovery-token-ca-cert-hash sha256:a5b8db6426f8a558698fc022f06ae0079874c23c1e18594ada63dffd08fee1cf 
+    
+  ```
+  
+  
 
