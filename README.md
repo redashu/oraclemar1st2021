@@ -81,3 +81,92 @@ apache2                                man.conf                               pr
 
 <img src="contvol.png">
 
+## Docker compose 
+
+<img src="compose.png">
+
+## compose file version 
+
+[compose file version](https://docs.docker.com/compose/compose-file/)
+
+## Compose examples 
+
+### 1 
+
+```
+version: '3.8'
+volumes: # is for creating volume
+ ashuvol5: # name of volume 
+services: # This is for your application in container form
+ frontend: # name of app here everything is application 
+  image: alpine
+  container_name: ashuc123
+  command: ping google.com
+  
+ ```
+ 
+ ### RUnning compose file 
+ 
+ ```
+ ❯ cd  mycomposefiles
+❯ ls
+docker-compose.yaml hello.yaml
+❯ docker-compose  -f  hello.yaml up  -d
+Creating network "mycomposefiles_default" with the default driver
+Creating ashuc123 ... done
+❯ docker-compose ps
+  Name         Command       State   Ports
+------------------------------------------
+ashuc123   ping google.com   Up           
+
+```
+
+## Example 2 
+
+```
+version: '3.8'
+networks: # creating network 
+ ashubr1: 
+services: 
+ mywebapp:
+  image: mywebapp:v001 
+  build: . # location of Dockerfile
+  networks: # using netowrk 
+   - ashubr1 
+  container_name: ashuxc5 # name of container 
+  ports:
+   - "8899:80"
+
+# docker build 
+#  docker run 
+# docker network create 
+# because since file version 2 network is automatically getting created
+
+```
+
+## Example 3 
+
+```
+version: '3.8'
+networks: # creating network 
+ ashubr1: 
+services: 
+ mywebapp:
+  image: mywebapp:v001 
+  build: 
+    context: .
+    dockerfile: ashu.dockerfile
+  networks: # using netowrk 
+   - ashubr1 
+  container_name: ashuxc5 # name of container 
+  ports:
+   - "8899:80"
+
+# docker build 
+#  docker run 
+# docker network create 
+# because since file version 2 network is automatically getting created
+
+```
+
+
