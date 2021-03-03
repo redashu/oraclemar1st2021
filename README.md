@@ -189,4 +189,66 @@ services:
 
 <img src="compo.png">
 
+## mInion Node 
+
+<img src="minion.png">
+
+
+## cluster deployment methods 
+
+<img src="method.png">
+
+## Minikube in one line 
+
+<img src="minikube.png">
+
+## Minikube download link 
+
+
+[download](https://minikube.sigs.k8s.io/docs/start/)
+
+
+### kubectl version check 
+
+```
+ kubectl  version  --client
+Client Version: version.Info{Major:"1", Minor:"20", GitVersion:"v1.20.2", GitCommit:"faecb196815e248d3ecfb03c680a4507229c2a56", GitTreeState:"clean", BuildDate:"2021-01-13T13:28:09Z", GoVersion:"go1.15.5", Compiler:"gc", Platform:"darwin/amd64"}
+
+```
+
+## checking kubernetes client & cluster version 
+
+```
+ kubectl  version
+Client Version: version.Info{Major:"1", Minor:"20", GitVersion:"v1.20.2", GitCommit:"faecb196815e248d3ecfb03c680a4507229c2a56", GitTreeState:"clean", BuildDate:"2021-01-13T13:28:09Z", GoVersion:"go1.15.5", Compiler:"gc", Platform:"darwin/amd64"}
+Server Version: version.Info{Major:"1", Minor:"20", GitVersion:"v1.20.2", GitCommit:"faecb196815e248d3ecfb03c680a4507229c2a56", GitTreeState:"clean", BuildDate:"2021-01-13T13:20:00Z", GoVersion:"go1.15.5", Compiler:"gc", Platform:"linux/amd64"}
+
+
+````
+
+### checking nodes 
+
+```
+❯ kubectl  cluster-info
+Kubernetes control plane is running at https://127.0.0.1:55000
+KubeDNS is running at https://127.0.0.1:55000/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
+
+To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
+❯ 
+❯ kubectl  get  nodes
+NAME       STATUS   ROLES                  AGE   VERSION
+minikube   Ready    control-plane,master   17m   v1.20.2
+
+
+```
+
+## deployment simple steps 
+
+<img src="depstep.png">
+
+
+## Container to Pod journey 
+
+<img src="pod.png">
+
 
