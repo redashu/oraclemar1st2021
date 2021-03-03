@@ -1,0 +1,19 @@
+version: '3.8'
+networks: # creating network 
+ ashubr1: 
+services: 
+ mywebapp:
+  image: mywebapp:v001 
+  build: 
+    context: .
+    dockerfile: ashu.dockerfile
+  networks: # using netowrk 
+   - ashubr1 
+  container_name: ashuxc5 # name of container 
+  ports:
+   - "8899:80"
+
+# docker build 
+#  docker run 
+# docker network create 
+# because since file version 2 network is automatically getting created

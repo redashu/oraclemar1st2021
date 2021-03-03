@@ -1,0 +1,6 @@
+version: '3.8'
+services: # This is for your application in container form
+ frontend: # name of app here everything is application 
+  image: alpine
+  container_name: ashuc123
+  command: ping google.com
