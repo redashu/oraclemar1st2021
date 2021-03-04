@@ -532,6 +532,22 @@ ashuapp   3/3     3            3           3m27s
 
 <img src="lb.png">
 
+## ALpine pod 
+
+```
+kubectl   run  ashupodx1  --image=alpine  --dry-run=client  -o yaml  >alp.yml
+
+```
+
+# Storage in K8s 
+
+<img src="st.png">
+
+[volume plugins](https://kubernetes.io/docs/concepts/storage/volumes/)
+
+## VOlume in k8s 
+
+<img src="vol.png">
 
 
 
