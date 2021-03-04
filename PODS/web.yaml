@@ -1,0 +1,40 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  namespace: ashu-space 
+  creationTimestamp: null
+  labels: # if you create by dry-run then label will be there 
+    run: ashuwebpod # here run is key and ashuwebpod is 
+  name: webpod # name of the pod 
+spec:
+  containers:
+  - image: dockerashu/htmlapp:v1
+    name: webpod
+    ports:
+    - containerPort: 80
+    resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: ashu-space 
+  creationTimestamp: null
+  labels: # label of service 
+    app: ashusvc1
+  name: ashusvc1  # name of service 
+spec:
+  ports: # ip port info 
+  - name: myport
+    port: 1234 # service port number 
+    protocol: TCP # protocol
+    targetPort: 80  # application port 
+  selector: # This field is for find POD 
+    run: ashuwebpod # label of POD to find 
+  type: NodePort  # type of service 
+status:
+  loadBalancer: {}
