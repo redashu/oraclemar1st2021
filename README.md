@@ -426,6 +426,73 @@ svc1   NodePort   10.106.195.104   <none>        1234:32551/TCP   39s
 
 ```
 
+## changing namespace to default 
+
+```
+  kubectl  config set-context  --current --namespace=ashu-space
+Context "kubernetes-admin@kubernetes" modified.
+❯ 
+
+
+```
+
+## scaling in RC 
+
+```
+❯ kubectl  get  rc
+NAME      DESIRED   CURRENT   READY   AGE
+ashu-rc   1         1         1       91m
+❯ kubectl apply -f helloapp.yaml
+replicationcontroller/ashu-rc configured
+service/ashusvc1 created
+❯ kubectl  get  rc
+NAME      DESIRED   CURRENT   READY   AGE
+ashu-rc   2         2         2       91m
+❯ kubectl get  po -o wide
+NAME            READY   STATUS    RESTARTS   AGE    IP               NODE       NOMINATED NODE   READINESS GATES
+ashu-rc-7hmzg   1/1     Running   0          105s   192.168.46.204   minion-1   <none>           <none>
+ashu-rc-97hpn   1/1     Running   0          12s    192.168.113.14   minion-2   <none>           <none>
+❯ 
+❯ 
+❯ kubectl  scale  rc  ashu-rc  --replicas=5
+replicationcontroller/ashu-rc scaled
+❯ kubectl get  po -o wide
+NAME            READY   STATUS    RESTARTS   AGE     IP                NODE       NOMINATED NODE   READINESS GATES
+ashu-rc-5n5q4   1/1     Running   0          3s      192.168.46.205    minion-1   <none>           <none>
+ashu-rc-7hmzg   1/1     Running   0          2m27s   192.168.46.204    minion-1   <none>           <none>
+ashu-rc-97hpn   1/1     Running   0          54s     192.168.113.14    minion-2   <none>           <none>
+ashu-rc-lpzvk   1/1     Running   0          3s      192.168.113.15    minion-2   <none>           <none>
+ashu-rc-mmzd7   1/1     Running   0          3s      192.168.107.143   minion-3   <none>           <none>
+❯ kubectl  scale  rc  ashu-rc  --replicas=1
+replicationcontroller/ashu-rc scaled
+
+
+```
+
+## Welcome to Deployment 
+
+<img src="dep.png">
+
+## reality of Deployment 
+
+<img src="depreal.png">
+
+## Deployment creation 
+
+```
+kubectl  create  deployment  ashuapp  --image=dockerashu/oraclemarch:2021v1  --dry-run=client -o yaml >deploy.yml
+```
+
+
+## creating  service and saving in above file 
+
+```
+❯ kubectl  create  deployment  ashuapp  --image=dockerashu/oraclemarch:2021v1  --dry-run=client -o yaml >deploy.yml
+❯ kubectl  create  service  nodeport mydepsvc  --tcp 1234:80   --dry-run=client -o yaml >>deploy.yml
+```
+
+
+
 
 
 
