@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels: # label of deployment 
+    app: ashuapp
+  name: ashuapp # name of Deployment 
+spec:
+  replicas: 1 # no of pod 
+  selector:
+    matchLabels:
+      app: ashuapp
+  strategy: {}
+  template: # pod template
+    metadata:
+      creationTimestamp: null
+      labels: # label of pod 
+        app: ashuapp
+    spec:
+      containers:
+      - image: dockerashu/oraclemarch:2021v1
+        name: oraclemarch
+        resources: {}
+status: {}
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: mydepsvc
+  name: mydepsvc
+spec:
+  ports:
+  - name: 1234-80
+    port: 1234
+    protocol: TCP
+    targetPort: 80
+  selector: # find pod 
+   app: ashuapp # label of
+  type: NodePort
+status:
+  loadBalancer: {}
