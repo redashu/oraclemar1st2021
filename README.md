@@ -491,6 +491,47 @@ kubectl  create  deployment  ashuapp  --image=dockerashu/oraclemarch:2021v1  --d
 ❯ kubectl  create  service  nodeport mydepsvc  --tcp 1234:80   --dry-run=client -o yaml >>deploy.yml
 ```
 
+### deployment of dep 
+
+```
+❯ kubectl apply -f  deploy.yml
+deployment.apps/ashuapp created
+service/mydepsvc created
+❯ kubectl  get  deployment
+NAME      READY   UP-TO-DATE   AVAILABLE   AGE
+ashuapp   1/1     1            1           9s
+❯ kubectl  get  deplo
+error: the server doesn't have a resource type "deplo"
+❯ kubectl  get  deploy
+NAME      READY   UP-TO-DATE   AVAILABLE   AGE
+ashuapp   1/1     1            1           18s
+❯ kubectl  get  rs
+NAME                 DESIRED   CURRENT   READY   AGE
+ashuapp-66dc7dc678   1         1         1       22s
+❯ kubectl  get  po
+NAME                       READY   STATUS    RESTARTS   AGE
+ashuapp-66dc7dc678-r4h2d   1/1     Running   0          25s
+❯ kubectl  get  svc
+NAME       TYPE       CLUSTER-IP     EXTERNAL-IP   PORT(S)          AGE
+mydepsvc   NodePort   10.109.42.89   <none>        1234:32203/TCP   28s
+
+```
+
+### scaling POD on deployment 
+
+```
+❯ kubectl  scale deploy  ashuapp --replicas=3
+deployment.apps/ashuapp scaled
+❯ kubectl get  deploy
+NAME      READY   UP-TO-DATE   AVAILABLE   AGE
+ashuapp   3/3     3            3           3m27s
+
+```
+
+## deployment with LB 
+
+<img src="lb.png">
+
 
 
 
