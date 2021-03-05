@@ -52,5 +52,45 @@ helloportainer   NodePort   10.98.47.125   <none>        1234:31723/TCP   7s
 
 ```
 
+## MYsql DB 
+
+```
+kubectl  create  deployment   ashudb --image=mysql:5.6  --dry-run=client -o yaml  >db.yml
+
+```
+
+## secret in k8s 
+
+<img src="secret.png">
+
+## creating secret for DB password  it take input in key : value pair 
+
+```
+❯ kubectl  create  secret   generic  ashusec1  --from-literal   sqlpw=Oracle12345
+secret/ashusec1 created
+❯ kubectl  get  secret
+NAME                  TYPE                                  DATA   AGE
+ashusec1              Opaque                                1      29s
+default-token-tnnbm   kubernetes.io/service-account-token   3      23h
+
+```
+
+###
+
+```
+❯ kubectl  describe secret  ashusec1
+Name:         ashusec1
+Namespace:    ashu-space
+Labels:       <none>
+Annotations:  <none>
+
+Type:  Opaque
+
+Data
+====
+sqlpw:  11 bytes
+
+```
+
 
 
