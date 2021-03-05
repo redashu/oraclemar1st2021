@@ -113,4 +113,66 @@ sqlpw:  11 bytes
 <img src="k8sdep.png">
 
 
+## service  account and management user in k8ss
+
+<img src="sa.png">
+
+## roles and binding 
+
+<img src="rbac.png">
+
+## Deployment of Dashboard. 
+
+```
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.0.0/aio/deploy/recommended.yaml
+namespace/kubernetes-dashboard created
+serviceaccount/kubernetes-dashboard created
+service/kubernetes-dashboard created
+secret/kubernetes-dashboard-certs created
+secret/kubernetes-dashboard-csrf created
+secret/kubernetes-dashboard-key-holder created
+configmap/kubernetes-dashboard-settings created
+role.rbac.authorization.k8s.io/kubernetes-dashboard created
+clusterrole.rbac.authorization.k8s.io/kubernetes-dashboard created
+rolebinding.rbac.authorization.k8s.io/kubernetes-dashboard created
+clusterrolebinding.rbac.authorization.k8s.io/kubernetes-dashboard created
+deployment.apps/kubernetes-dashboard created
+service/dashboard-metrics-scraper created
+deployment.apps/dashboard-metrics-scraper created
+
+```
+
+## dashboard history 
+
+```
+934* kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.0.0/aio/deploy/recommended.yaml  
+ 9935  cd
+ 9936  kubectl  get  ns
+ 9937* :wq
+ 9938  kubectl  get  sa   -n  kubernetes-dashboard 
+ 9939  kubectl  get  svc   -n  kubernetes-dashboard 
+ 9940  kubectl  get  deploy   -n  kubernetes-dashboard 
+ 9941  kubectl  get  pod  -n  kubernetes-dashboard 
+ 9942  kubectl  get  sa   -n  kubernetes-dashboard 
+ 9943  kubectl  get  secret   -n  kubernetes-dashboard 
+ 9944  kubectl  describe  secret  kubernetes-dashboard-token-gxwvp  -n kubernetes-dashboard 
+ 9945  history
+ 9946  kubectl  get  secret   -n  kubernetes-dashboard 
+ 9947  kubectl   get  svc 
+ 9948  kubectl   get  svc  -n kubernetes-dashboard 
+ 9949  kubectl   edit  svc  kubernetes-dashboard   -n kubernetes-dashboard 
+ 9950  kubectl   get  svc  -n kubernetes-dashboard 
+ 9951  history
+ 9952  kubectl  get  secret   -n  kubernetes-dashboard 
+ 9953  kubectl  describe  secret  kubernetes-dashboard-token-gxwvp  -n kubernetes-dashboard
+ 9954  kubectl  get  roles 
+ 9955  kubectl  get  roles -n kubernetes-dashboard 
+ 9956  kubectl  get  clusterroles -n kubernetes-dashboard 
+ 9957  vim  accc.yml
+ 9958  kubectl  get  sa -n kubernetes-dashboard 
+ 9959  vim  accc.yml
+ 9960  kubectl  apply -f accc.yml
+
+```
+
 
