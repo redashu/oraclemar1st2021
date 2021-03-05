@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: ashuwebapp
+  name: ashuwebapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ashuwebapp
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: ashuwebapp
+    spec:
+      containers:
+      - image: wordpress:4.8-apache
+        name: wordpress
+        env: 
+        - name: WORDPRESS_DB_HOST # ip/hostname of DB server 
+          value: ashudb # service name of DB Pod/deployment 
+        - name: WORDPRESS_DB_PASSWORD # env var that is already present in image
+          valueFrom:
+           secretKeyRef:
+            name: ashusec1
+            key: sqlpw 
+        resources: {}
+status: {}

@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Pod
+metadata:
+ name: podx1
+ labels:
+  x: helloashu
+spec:
+ volumes:
+ - name: ashuvol11 # volume is getting created 
+   emptyDir: {}
+ containers:
+ - image: nginx
+   name: ashuc2
+   volumeMounts:
+   - name: ashuvol11 #mounting 
+     mountPath: /usr/share/nginx/html/ # documentroot of nginx
+     readOnly: True
+ - image: alpine
+   name: ashuc1
+   volumeMounts:
+   - name: ashuvol11 # mounting 
+     mountPath: /mnt/data
+   command: ["/bin/sh","-c","while true ; do date  >>/mnt/data/a.txt;sleep 5;done"]

@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: dd11
+  name: dd11
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dd11
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: dd11
+    spec:
+      imagePullSecrets:
+      - name: mysec 
+      containers:
+      - image: oracleindia.azurecr.io/myweb:v001
+        name: myweb
+        resources: {}
+status: {}

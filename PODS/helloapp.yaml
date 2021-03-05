@@ -1,0 +1,39 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: ashu-rc # name of replication controller 
+spec: 
+ replicas: 2 # no of pod we want to deploy
+ template:
+  metadata:
+   name: ashupod44 # optional field
+   labels:
+    x: helloashu
+  spec:
+   containers:
+   - image: nginx # image from docker hub 
+     name: ashuc1  # name of container 
+     ports:
+     - containerPort: 80
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: ashu-space 
+  creationTimestamp: null
+  labels: # label of service 
+    app: ashusvc1
+  name: ashusvc1  # name of service 
+spec:
+  ports: # ip port info 
+  - name: myport
+    port: 1234 # service port number 
+    protocol: TCP # protocol
+    targetPort: 80  # application port 
+  selector: # This field is for find POD 
+    x: helloashu # label of POD to find 
+  type: NodePort  # type of service 
+status:
+  loadBalancer: {}

@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: ashupod2
+  name: ashupod2 # name of POD 
+spec:
+  nodeName: minion-1 # here your kube-schedular is not gonna work
+  containers:
+  - image: nginx # image from Docker hub 
+    name: myc1 # name of container 
+    ports: # application port 
+    - containerPort: 80
+    resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}

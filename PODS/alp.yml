@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: ashupodx1
+  name: ashupodx1
+spec:
+  volumes: # this is for creating VOlume 
+  - name: ashuvol111  # name of volume 
+    emptyDir: {}  #  it will randomly choose location and create random directory
+  containers:
+  - image: alpine
+    name: ashupodx1
+    volumeMounts: # for Mounting volume created above 
+    - name: ashuvol111 # same vol name as created above 
+      mountPath: /mnt/ok # mount location inside container 
+    command: ["/bin/sh","-c","while true;do date >>/mnt/ok/time.txt;sleep 5;done"] 
+    # if you have your process by ENTRYPOINT then command can replace that 
+    resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}

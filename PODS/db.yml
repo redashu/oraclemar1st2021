@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: ashudb
+  name: ashudb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ashudb
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: ashudb
+    spec:
+      volumes:
+      - name: hellovol1
+        nfs:
+         server: 172.31.79.103
+         path: /data/ashu
+      containers:
+      - image: mysql:5.7
+        name: mysql1
+        ports:
+        - containerPort: 3306
+        env: # to define / create env variable 
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+           secretKeyRef:
+            name: ashusec1
+            key: sqlpw
+        volumeMounts:
+        - name: hellovol1
+          mountPath: /var/lib/mysql/
+       
+        resources: {}
+status: {}

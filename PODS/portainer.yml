@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: helloportainer
+  name: helloportainer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: helloportainer
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: helloportainer
+    spec:
+      volumes: # creating volume 
+      - name: ashuvolx1
+        hostPath:
+         path: /var/run/docker.sock
+         type: Socket 
+      containers:
+      - image: portainer/portainer
+        name: portainer
+        ports:
+        - containerPort: 9000
+        volumeMounts: # mounting volume 
+        - name: ashuvolx1
+          mountPath: /var/run/docker.sock 
+
+        resources: {}
+status: {}
