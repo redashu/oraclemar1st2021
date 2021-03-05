@@ -92,5 +92,25 @@ sqlpw:  11 bytes
 
 ```
 
+## WOrdpress web app deployment 
+
+<img src="wordpress.png">
+
+## acr to k8s 
+
+<img src="acr.png">
+
+## CLoud service of k8s
+
+<img src="cloudser.png">
+
+## Container registry 
+
+<img src="crdiff.png">
+
+## over view 
+
+<img src="k8sdep.png">
+
 
 
